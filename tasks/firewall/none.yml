@@ -1,0 +1,4 @@
+---
+- name: No firewall configuration
+  ansible.builtin.debug:
+    msg: "No firewall specified. Doing nothing."

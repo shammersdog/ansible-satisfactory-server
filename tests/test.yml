@@ -1,0 +1,6 @@
+---
+- name: Test shammersdog.satisfactory-server
+  hosts: localhost
+  remote_user: root
+  roles:
+    - shammersdog.satisfactory-server

@@ -1,0 +1,17 @@
+---
+- name: Open tcp and udp ports for Satisfactory 
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: "{{ item }}"
+    destination_ports: "{{ port }}"
+    jump: ACCEPT
+  loop:
+    - tcp
+    - udp
+
+- name: Start iptables service
+  ansible.builtin.systemd_service:
+    name: iptables
+    state: started
+    enabled: true
+  when: start_firewall

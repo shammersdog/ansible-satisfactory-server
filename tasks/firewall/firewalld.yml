@@ -1,0 +1,17 @@
+---
+- name: Open tcp and udp ports for Satisfactory
+  ansible.posix.firewalld:
+    port: "{{ port }}/{{ item }}"
+    permanent: true
+    offline: true
+    state: enabled
+  loop:
+    - tcp
+    - udp
+
+- name: Start and enable firewalld
+  ansible.builtin.systemd_service:
+    name: firewalld
+    state: started
+    enabled: true
+  when: start_firewall

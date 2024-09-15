@@ -1,0 +1,15 @@
+---
+- name: Open tcp and udp ports for Satisfactory
+  community.general.ufw:
+    rule: allow
+    port: "{{ port }}"
+    proto: "{{ item }}"
+    comment: "Satisfactory dedicated server {{ item }} port."
+  loop:
+    - tcp
+    - udp
+
+- name: Start and enable ufw
+  community.general.ufw:
+    enable: true
+  when: start_firewall

@@ -1,0 +1,20 @@
+---
+- name: Install Satisfactory server
+  ansible.builtin.shell:
+    cmd: "/bin/bash ./steamcmd.sh +force_install_dir {{ install_dir }} +login anonymous +app_update 1690800 validate +quit"
+    chdir: "{{ steamcmd_dir }}"
+    creates: "{{ install_dir }}/FactoryServer.sh"
+  become: true
+  become_user: "{{ steam_user }}"
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: satisfactory.service.j2
+    dest: /etc/systemd/system/satisfactory.service
+  notify: Systemd reload daemon
+
+- name: Start and enable service
+  ansible.builtin.systemd_service:
+    name: satisfactory
+    state: started
+    enabled: true

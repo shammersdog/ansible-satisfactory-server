@@ -1,0 +1,11 @@
+---
+bind_address: "*"
+firewall: none
+install_dir: "/home/{{ steam_user }}/SatisfactoryDedicatedServer"
+players_number: 4
+port: "7777"
+start_firewall: true
+steam_group: steam
+steam_user: steam
+steamcmd_dir: "/home/{{ steam_user }}/Steam"
+steamcmd_tarball: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz

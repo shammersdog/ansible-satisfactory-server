@@ -1,0 +1,57 @@
+---
+- name: Create unprivileged user
+  ansible.builtin.user:
+    name: "{{ steam_user }}"
+    comment: "Unprivileged account for running SteamCMD and game servers."
+    create_home: true
+    state: present
+
+- name: Install prerequisite packages (deb)
+  ansible.builtin.apt:
+    name: lib32gcc-s1
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Install prerequisite packages (fedora)
+  ansible.builtin.dnf:
+    name:
+      - glibc.i686
+      - libstdc++.i686
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Fedora" or (ansible_distribution == "RHEL" and ansible_distribution_major_version >= '8')
+
+- name: Install prerequisite packages (RHEL)
+  ansible.builtin.yum:
+    name:
+      - glibc.i686
+      - libstdc++.i686
+    state: present
+    update_cache: true
+  when: ansible_distribution == "RHEL" and ansible_distribution_major_version <= '7'
+
+- name: Create Steam directories
+  ansible.builtin.file:
+    path: "{{ steamcmd_dir }}"
+    owner: "{{ steam_user }}"
+    group: "{{ steam_group }}"
+    state: directory
+
+- name: Get SteamCMD
+  ansible.builtin.unarchive:
+    src: "{{ steamcmd_tarball }}"
+    dest: "{{ steamcmd_dir }}"
+    remote_src: true
+    creates: "{{ steamcmd_dir }}/steamcmd.sh"
+  become: true
+  become_user: "{{ steam_user }}"
+
+- name: Initial SteamCMD run
+  ansible.builtin.shell:
+    cmd: "/usr/bin/bash ./steamcmd.sh +quit"
+    chdir: "{{ steamcmd_dir }}"
+    creates: "{{ steamcmd_dir }}/linux64/steamclient.so"
+  become: true
+  become_user: "{{ steam_user }}"
+

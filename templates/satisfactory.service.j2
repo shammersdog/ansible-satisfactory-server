@@ -1,0 +1,17 @@
+[Unit]
+Description=Satisfactory dedicated server
+Wants=network-online.target
+After=network.target syslog.target nss-lookup.target network-online.target
+
+[Service]
+Environment="LD_LIBRARY_PATH={{ steamcmd_dir }}/linux64"
+ExecStartPre=/usr/bin/bash {{ steamcmd_dir }}/steamcmd.sh +force_install_dir {{ install_dir }} +login anonymous +app_update 1690800 validate +quit
+ExecStart=/bin/sh {{ install_dir }}/FactoryServer.sh -ServerQueryPort=15777 -BeaconPort=15000 -Port={{ port }} -log -unattended -multihome {{ bind_address }} -ini:Game:[/Script/Engine.GameSession]:MaxPlayers={{ players_number }}
+User={{ steam_user }}
+Group={{ steam_group }}
+StandardOutput=journal
+Restart=on-failure
+WorkingDirectory={{ install_dir }}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+galaxy_info:
+  author: shammersdog
+  role_name: satisfactory_server
+  namespace: shammersdog
+  description: An Ansible role for deplying a single Satisfactory Dedicated Server instance on x86_64 Linux systems.
+
+  license: MIT
+
+  min_ansible_version: "2.9"
+
+  galaxy_tags: [
+    "satisfactory",
+    "game",
+    "video game",
+    "dedicated server",
+    "steam",
+    "steamcmd"
+  ]
+
+dependencies: []

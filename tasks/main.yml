@@ -1,0 +1,17 @@
+---
+- name: Check architecture
+  ansible.builtin.fail:
+    msg: "Satisfactory server only runs on x86/64."
+  when: ansible_architecture != "x86_64"
+
+- name: Install SteamCMD
+  ansible.builtin.import_tasks: steamcmd.yml
+
+- name: Install Satisfactory Server
+  ansible.builtin.import_tasks: server.yml
+
+- name: Configure system firewall if applicable
+  ansible.builtin.import_tasks: "firewall/{{ firewall }}.yml"
+  when:
+    - firewall != "none"
+    - firewall == "firewalld" or firewall == "ufw" or firewall == "iptables"
