@@ -20,7 +20,7 @@ Install from GitHub
 -------------------
 
 To install this role, use Ansible-Galaxy:  
-`ansible-galaxy install git+https://github.com/shammersdog/ansible-satisfactory-server.git`
+`ansible-galaxy role install git+https://github.com/shammersdog/ansible-satisfactory-server.git,main,shammersdog.satisfactory-server`
 
 
 Role Variables
